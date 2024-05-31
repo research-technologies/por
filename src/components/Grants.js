@@ -70,6 +70,13 @@ export default function Grants(props) {
     }
   }, [open]);
 */}
+  let trigger_limit = 3;
+  // if we are funnelling start the search without text...?
+  if(props.partOrgs?.length){
+      trigger_limit = 0;
+//      setOpen(true);
+  }
+  console.log("TRIGGER_LIMIT: ", trigger_limit);
   useDebouncedEffect(() => {
     let active = true;
 
@@ -77,7 +84,8 @@ export default function Grants(props) {
       return undefined;
     }
 
-    if (searchText.length >= 3) {
+    if (searchText.length >= trigger_limit) {
+      console.log("triggering...");
       // Search two datasources!
       const cr = async () => {
         return getCrossRefGrantData(props,searchText)
@@ -132,11 +140,12 @@ export default function Grants(props) {
           onInputChange={(e) => setSearchText(e.target.value)}
           filterSelectedOptions
           freeSolo
+          disableCloseOnSelect
           isOptionEqualToValue={(option, value) => option.title === value.title}
           getOptionLabel={(option) => `${option.title}: ${option.publisher}/${option.sub}`}
           renderOption={(props, option) => {
             return (
-	      <li {...props} key={option.title}>
+	      <li {...props} key={option.title+option.sub}>
                 {option.title}: {option.publisher}/{option.sub}
 	      </li>
 	    )

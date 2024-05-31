@@ -6,7 +6,7 @@ export const getCrossRefOutputData = (props, value) => {
   // Outputs by org (ror) (Needs grants filtered out)
   // https://api.crossref.org/works?filter=ror-id:https://ror.org/04cw6st05&select=DOI,title,type,author
 
-  // Outpus by funder by org (DOI+ROR) (Needs grants filtered out)
+  // Outputs by funder by org (DOI+ROR) (Needs grants filtered out)
   // https://api.crossref.org/funders/10.13039/100010269/works?filter=ror-id:https://ror.org/04cw6st05&select=DOI,title,type
 
 
@@ -16,10 +16,18 @@ export const getCrossRefOutputData = (props, value) => {
   }
 
   let rors = []
-  if(props.orgs?.length){
-    orcids = props.orgs.map((org) => {return org.ror});
+  if(props.partOrgs?.length){
+    rors = props.partOrgs.map((org) => {return org.ror});
   }
 
+/* TODO extract fundref DOI from ror record to filter CR outputs by funder */
+/*
+  let funders = []
+  if(props.fundOrgs?.length){
+    orcids = props.fundOrgs.map((org) => {return org.ror});
+  }*/
+  //temp cheat 
+ // let url = 'https://api.crossref.org/funders/10.13039/100010269/works?filter='
   let url = 'https://api.crossref.org/works?filter='
   if(orcids.length) {
     orcids.map(function (orcid) {
@@ -40,8 +48,9 @@ export const getCrossRefOutputData = (props, value) => {
   .then((response) => {
       console.log(response);
       let data = response.message.items?.map(function(output,index){
-	   return {title: output.title[0], authors: output.author, publisher: output.publisher, doi: output.DOI, sub: output['short-container-title']};
-      });
+           if(output.type === 'grant' ) return false;
+	   return {title: output.title[0], authors: output.author, publisher: output.publisher, doi: output.DOI, sub: output['short-container-title'], full: output};
+      }).filter(Boolean);
       console.log(data);
       return data;
   })
@@ -73,8 +82,8 @@ export const getPeopleData = (props, value, role) => {
   //TODO make filters from props orgs, people, etc
   console.log(props.orgs);
   let rors = []
-  if(props.orgs.length){
-    rors = props.orgs.map((org, key) => {return org.ror});
+  if(props.partOrgs.length){
+    rors = props.partOrgs.map((org, key) => {return org.ror});
   }
 
   // People by output
@@ -122,8 +131,8 @@ export const getLogos = () => {
 export const getDataCiteGrantData = (props, value) => {
 
   let rors = []
-  if(props.orgs.length){
-    rors = props.orgs.map((org) => {return org.ror});
+  if(props.partOrgs.length){
+    rors = props.partOrgs.map((org) => {return org.ror});
   }
 
   let url ="https://api.datacite.org/dois?query=types.resourceType:Grant"
@@ -154,8 +163,8 @@ export const getDataCiteGrantData = (props, value) => {
 export const getCrossRefGrantData = (props, value) => {
 
   let rors = []
-  if(props.orgs.length){
-    rors = props.orgs.map((org) => {return org.ror});
+  if(props.partOrgs.length){
+    rors = props.partOrgs.map((org) => {return org.ror});
   }
 
   let url ="https://api.crossref.org/works?filter=type:grant"

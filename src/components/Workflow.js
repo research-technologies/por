@@ -155,13 +155,13 @@ export default function BasicTabs(props) {
         <Organisations onPartChange={handlePartOrgsChange} onFundChange={handleFundOrgsChange} orgContext={orgContext}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Grants onStateChange={handleGrantsChange} orgs={partOrgs}/>
+        <Grants onStateChange={handleGrantsChange} partOrgs={partOrgs}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <Projects/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <People onAuthPeopleChange={handleAuthPeopleChange} orgs={partOrgs} userContext={userContext} authPeople={authPeople}/>
+        <People onAuthPeopleChange={handleAuthPeopleChange} partOrgs={partOrgs} fundOrgs={fundOrgs} userContext={userContext} authPeople={authPeople}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
         <Outputs onOutputsChange={handleOutputsChange} authPeople={authPeople} partOrgs={partOrgs} fundOrgs={fundOrgs}/>

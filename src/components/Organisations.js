@@ -64,10 +64,12 @@ export function OrganisationsAC(props) {
 
 
   useDebouncedEffect(() => {
+/*
     if(props.orgContext) {
       setOptions([props.orgContext])
       setOpen(true)
     }
+    */
     if (searchText.length >= 3) {
       (async () => {
         await getOrganisationsData(props.filter, searchText, props.role).then(data=>{

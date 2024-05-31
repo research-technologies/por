@@ -70,6 +70,7 @@ export default function Outputs (props) {
           onInputChange={(e) => setSearchText(e.target.value)}
           filterSelectedOptions
           freeSolo
+          disableCloseOnSelect
           isOptionEqualToValue={(option, value) => option.title === value.title}
           getOptionLabel={(option) => option.title || ""}
           renderOption={(props, option) => {

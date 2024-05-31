@@ -105,7 +105,7 @@ export function PersonAC(props) {
           renderOption={(props, option) => {
             return (
 	      <li {...props} key={option.title}>
-                {option.title}
+                {option.title + " (" + option.affiliation + ")"}
 	      </li>
 	    )
 	  }}
